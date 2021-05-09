@@ -23,9 +23,22 @@
     <br>
   </div>
 
-  <div class="cell-container">
+  <div id="cell1" class="cell-container">
     <textarea contenteditable> </textarea>
     <button onclick="runCell()"> ▶️ </button>
+    <select class="lang" onchange="langFunction()">
+    <optgroup label="interpreted">
+      <option value="Python3"> Python3 </option>
+      <option value="R"> R </option>
+    </optgroup>
+    <optgroup label="compiled">
+      <option value="Julia"> Julia </option>
+      <option value="Rust"> Rust </option>
+    </optgroup>
+    <optgroup label="Other">
+      <option value="Bash"> Bash </option>
+    </optgroup>
+  </select>
   </div>
 
 <!-- <script>
