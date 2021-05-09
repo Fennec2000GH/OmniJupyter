@@ -22,46 +22,47 @@ var sequelize = new Sequelize({
   logging: false,
 });
 
-// Define the Account model for the "accounts" table.
-const Account = sequelize.define("accounts", {
+// stores code snippet from each cell
+const Cell = sequelize.define("Cell", {
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
   },
-  balance: {
-    type: Sequelize.INTEGER,
+  runtime: {
+    type: Sequelize.ENUM({values: ["Python", "R", "Julia", "Rust", "Bash"]})
   },
+  code: {
+    type: Sequelize.TEXT
+  }
 });
 
-// Create the "accounts" table.
-Account.sync({
+// Create the "Cell" table
+Cell.sync({
   force: true,
-})
-  .then(function () {
-    // Insert two rows into the "accounts" table.
+}).then(() => {
+    // Inserting dummy data
     return Account.bulkCreate([
       {
         id: 1,
-        balance: 1000,
+        runtime: "Rust",
+        cell: "use std::env; fn main() { let x: Vec<String> = env::args().collect(); println!(\"{:?}\", x); }"
       },
       {
         id: 2,
-        balance: 250,
+        runtime: "Bash",
+        cell: "ls -1Fa"
       },
     ]);
-  })
-  .then(function () {
-    // Retrieve accounts.
+  }).then(function () {
+    // Get all stored code cells
     return Account.findAll();
-  })
-  .then(function (accounts) {
-    // Print out the balances.
+  }).then(function (accounts) {
+    // Print the code
     accounts.forEach(function (account) {
       console.log(account.id + " " + account.balance);
     });
     process.exit(0);
-  })
-  .catch(function (err) {
+  }).catch(function (err) {
     console.error("error: " + err.message);
     process.exit(1);
   });
